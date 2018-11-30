@@ -12,6 +12,7 @@ DOCKER_IMAGE_BASE := jamfdevops
 DOCKER_ORG := 
 DOCKER_IMAGE := jamfpro
 
+IS_TAG=$(shell git describe --exact-match; echo $$?)
 VERSION=$(shell git --no-pager describe --tags --always)
 SHA=$(shell git rev-parse --verify HEAD)
 BUILD_URL=$(TRAVIS_JOB_WEB_URL)
@@ -39,8 +40,12 @@ publish-latest: tag-latest ## Publish the `latest` taged container
 	docker push $(DOCKER_IMAGE_BASE)$(DOCKER_ORG)/$(DOCKER_IMAGE):latest
 
 publish-version: tag-version ## Publish the `{version}` tagged container
-	@echo 'Publish $(VERSION) to $(DOCKER_IMAGE_BASE)$(DOCKER_ORG)'
-	docker push $(DOCKER_IMAGE_BASE)$(DOCKER_ORG)/$(DOCKER_IMAGE):$(VERSION)
+	@if [ "$(IS_TAG)" = "0" ]; then\
+		echo 'Publish $(VERSION) to $(DOCKER_IMAGE_BASE)$(DOCKER_ORG)';\
+		docker push $(DOCKER_IMAGE_BASE)$(DOCKER_ORG)/$(DOCKER_IMAGE):$(VERSION);\
+	else \
+		echo 'Not a git tag, skipping push step';\
+	fi
 
 # Docker tagging
 tag: tag-latest tag-version ## Generate image tags for the `{version}` and `latest`
@@ -59,3 +64,8 @@ repo-login: ## Login to docker repo
 
 version: ## Output the current version
 	@echo $(VERSION)
+
+testit:
+	if [ "$(IS_TAG)" = "0" ]; then\
+		echo "Hello world";\
+	fi
