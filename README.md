@@ -1,4 +1,4 @@
-# JamfPro Tomcat Docker image
+# JamfPro Tomcat Docker image [![Build Status](https://travis-ci.com/jamf/jamfpro.svg?branch=master)](https://travis-ci.com/jamf/jamfpro)
 
 ## Description
 Basic Docker image based upon upstream Tomcat image to run a manually downloaded JamfPro ROOT.war from JamfNation
