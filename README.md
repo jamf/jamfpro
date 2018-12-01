@@ -31,6 +31,8 @@ JMXREMOTE_PASSWORD_FILE
 CATALINA_OPTS
 JAVA_OPTS [ -Djava.awt.headless=true ]
 
+MASTER_NODE_NAME -- Enable clustering, when set this container will be the master node, should be set as the hostname from the perspective of MySQL login
+
 ```
 
 ## Data Persistence

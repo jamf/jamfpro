@@ -91,6 +91,16 @@ setup_java_opts() {
   echo_time "\n\nJAVA_OPTS: $JAVA_OPTS \n\n"
 }
 
+create_cluster_properties(){
+  echo_time "Creating the clustering properties file"
+cat <<- EOF > /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/clustering.properties
+  cluster.settings.enabled=true
+  cluster.settings.monitor_frequency=180
+  cluster.node[0]=$MASTER_NODE_NAME
+EOF
+}
+
+
 ##########################################################
 ####################### Executions #######################
 
@@ -102,6 +112,11 @@ if [ ! -d /usr/local/tomcat/webapps/ROOT ]; then
   setup_stdout_logging
 else
   echo_time "/usr/local/tomcat/webapps/ROOT exists, skipping ROOT.war deploy"
+fi
+
+if [ ! -z "$MASTER_NODE_NAME" ]; then
+  echo_time "Master node name is set to enable clustering: $MASTER_NODE_NAME"
+  create_cluster_properties
 fi
 
 setup_linux_logging_paths

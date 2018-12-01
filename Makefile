@@ -12,7 +12,7 @@ DOCKER_IMAGE_BASE := jamfdevops
 DOCKER_ORG := 
 DOCKER_IMAGE := jamfpro
 
-IS_TAG=$(shell git describe --exact-match; echo $$?)
+IS_TAG=$(shell git describe --exact-match>/dev/null; echo $$?)
 VERSION=$(shell git --no-pager describe --tags --always)
 SHA=$(shell git rev-parse --verify HEAD)
 BUILD_URL=$(TRAVIS_JOB_WEB_URL)
@@ -65,7 +65,3 @@ repo-login: ## Login to docker repo
 version: ## Output the current version
 	@echo $(VERSION)
 
-testit:
-	if [ "$(IS_TAG)" = "0" ]; then\
-		echo "Hello world";\
-	fi
