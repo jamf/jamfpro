@@ -28,8 +28,13 @@ setup_stdout_logging() {
   if [[ $STDOUT_LOGGING == "true" ]]; then
     #Add stdout output for Jamf specific log files while maintaining logging to the files
     echo_time "STDOUT_LOGGING is true, add stdout logging for all logfiles"
-    sed -e '/log4j.rootLogger/ {r /log4j.stdout.replace
-      d}' -i /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/log4j.properties
+    if grep -Fxq "log4j.rootLogger=INFO,JAMF,stdout" /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/log4j.properties; then
+      echo_time "stdout logging appears to be present in log4j.properties file, skipping"
+    else
+      echo_time "Add stdout logging to log4j.properties file"
+      sed -e '/log4j.rootLogger/ {r /log4j.stdout.replace
+        d}' -i /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/log4j.properties
+    fi
   fi
 }
 
@@ -91,12 +96,16 @@ setup_java_opts() {
   echo_time "\n\nJAVA_OPTS: $JAVA_OPTS \n\n"
 }
 
-create_cluster_properties(){
+##########################################################
+# Arguments:
+#   Cluster master node name / ip
+##########################################################
+create_cluster_properties() {
   echo_time "Creating the clustering properties file"
 cat <<- EOF > /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/clustering.properties
   cluster.settings.enabled=true
   cluster.settings.monitor_frequency=180
-  cluster.node[0]=$MASTER_NODE_NAME
+  cluster.node[0]=$1
 EOF
 }
 
@@ -109,15 +118,31 @@ if [ ! -d /usr/local/tomcat/webapps/ROOT ]; then
   echo_time "/usr/local/tomcat/webapps/ROOT directory does not exist, attempt to deploy ROOT.war from /data"
   unpack_root_war
 
-  setup_stdout_logging
 else
   echo_time "/usr/local/tomcat/webapps/ROOT exists, skipping ROOT.war deploy"
 fi
 
+# Check to see if clustering should be enabled by existence of MASTER_NODE_NAME
 if [ ! -z "$MASTER_NODE_NAME" ]; then
-  echo_time "Master node name is set to enable clustering: $MASTER_NODE_NAME"
-  create_cluster_properties
+  echo_time "Master node name is set, enable clustering with master set to: $MASTER_NODE_NAME"
+  
+  # Check to see if this is a Kubernetes deployment with POD_NAME and POD_IP set
+  if [ ! -z "$POD_NAME" ] && [ ! -z "$POD_IP" ]; then
+    echo_time "POD_NAME and POD_IP set, assuming Kubernetes environment"
+  
+    # Check to see if the master node name requested is the current pod name, if so set this as master
+    if [[ "$MASTER_NODE_NAME" == "$POD_NAME" ]]; then
+      echo_time "This node should be the master node, setting paramaters accordingly"
+      create_cluster_properties $POD_IP
+    else
+      echo_time "This node will be setup as non-master node"
+    fi
+
+  fi
+  create_cluster_properties $MASTER_NODE_NAME
 fi
+
+setup_stdout_logging
 
 setup_linux_logging_paths
 
