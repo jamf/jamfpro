@@ -2,7 +2,10 @@ FROM tomcat:8.5.35-jre8-slim
 
 LABEL Maintaner JamfDevops <devops@jamf.com>
 
-RUN adduser --disabled-password --gecos '' tomcat && \
+RUN apt-get update -qq && \
+	DEBIAN_FRONTEND=noninteractive apt-get install --ignore-missing --no-install-recommends -y jq curl && \
+	apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+	adduser --disabled-password --gecos '' tomcat && \
 	rm -rf /usr/local/tomcat/webapps && \
 	mkdir -p /usr/local/tomcat/webapps
 
