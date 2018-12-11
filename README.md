@@ -44,7 +44,7 @@ This image requires that either a `/data/ROOT.war` be bind-mounted and exist, or
 A ROOT.war will be auto-unpacked and configured based upon the above environment variables, or if the ROOT directory already exists, nothing will be unpacked but logging paths, database information, JMX, and Java opts will be set.
 
 ## Example
-Run a basic JamfPro instance with port 8080 exposed locally on port 8080, setup remote database, bind-mounted ROOT.war, and bind-mounted webapps directory
+Run a basic JamfPro instance with port 8080 exposed locally on port 8080, setup remote database, bind-mounted ROOT.war, and bind-mounted webapps directory.
 
 ```
 docker run -p 8080:8080 -d \
@@ -53,8 +53,10 @@ docker run -p 8080:8080 -d \
 -e DATABASE_HOST=host.docker.internal \
 -v $(pwd)/ROOT.war:/data/ROOT.war \
 -v $(pwd)/webapps:/usr/local/tomcat/webapps \
-jamfpro
+jamfdevops/jamfpro:0.0.4
 ```
+Valid image tags can be found on  [Dockerhub Tags](https://hub.docker.com/r/jamfdevops/jamfpro/tags/) or [Github Releases](https://github.com/jamf/jamfpro/releases).
+
 
 ## Kubernetes Deployment
 When enabling clustering the Tomcat manifest should include both `POD_NAME` and `POD_IP` environment variables which can be accessed via the Kubernetes downward API.  The environment variable `MASTER_NODE_NAME` should be set to whichever pod will become the master node.  An example of utilizing the downward API in a manifest:
