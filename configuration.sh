@@ -96,6 +96,20 @@ setup_java_opts() {
   echo_time "\n\nJAVA_OPTS: $JAVA_OPTS \n\n"
 }
 
+create_cache_properties(){
+  echo_time "Setting up the cache.properties to be memcached"
+  cat <<-EOF > /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/dal/cache.properties
+cache.type=memcached
+EOF
+}
+
+create_memcached_properties(){
+  echo_time "Setting up the memcached.properties"
+  cat <<-EOF > /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/dal/memcached.properties
+memcached.endpoints[0]=$MEMCACHED_HOST
+EOF
+}
+
 ##########################################################
 # Arguments:
 #   Cluster master node name / ip
@@ -140,6 +154,14 @@ if [ ! -z "$MASTER_NODE_NAME" ]; then
 
   fi
   create_cluster_properties $MASTER_NODE_NAME
+fi
+
+# Check for MEMCACHED_HOST environment variable to setup Memcached
+if [ ! -z "$MEMCACHED_HOST" ]; then
+  echo_time "Memcached host is set, setup memcached settings"
+  create_cache_properties
+
+  create_memcached_properties
 fi
 
 setup_stdout_logging

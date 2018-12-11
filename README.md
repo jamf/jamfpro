@@ -37,6 +37,8 @@ MASTER_NODE_NAME -- Enable clustering, when set this container will be the maste
 POD_NAME -- Enable Kubernetes clustering via downward API
 POD_IP -- Enable Kubernetes clustering via downward API
 
+MEMCACHED_HOST -- Enable Memcached caching, assumes port 11211 by default
+
 ```
 
 ## Data Persistence
