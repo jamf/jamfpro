@@ -1,4 +1,4 @@
-FROM tomcat:8.5.35-jre8-slim
+FROM tomcat:8.5.39-jre8-slim
 
 LABEL Maintaner JamfDevops <devops@jamf.com>
 
