@@ -1,5 +1,0 @@
-services:
-  - 'docker'
-
-script:
-  - 'make release'
