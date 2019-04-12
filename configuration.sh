@@ -107,6 +107,7 @@ create_memcached_properties(){
   echo_time "Setting up the memcached.properties"
   cat <<-EOF > /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/dal/memcached.properties
 memcached.endpoints[0]=$MEMCACHED_HOST
+memcached.timeToLiveSeconds=120
 EOF
 }
 
@@ -117,9 +118,9 @@ EOF
 create_cluster_properties() {
   echo_time "Creating the clustering properties file"
 cat <<- EOF > /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/clustering.properties
-  cluster.settings.enabled=true
-  cluster.settings.monitor_frequency=180
-  cluster.node[0]=$1
+cluster.settings.enabled=true
+cluster.settings.monitor_frequency=180
+cluster.node[0]=$1
 EOF
 }
 
