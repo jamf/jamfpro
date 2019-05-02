@@ -56,7 +56,7 @@ docker run -p 8080:8080 -d \
 -e DATABASE_HOST=host.docker.internal \
 -v $(pwd)/ROOT.war:/data/ROOT.war \
 -v $(pwd)/webapps:/usr/local/tomcat/webapps \
-jamfdevops/jamfpro:0.0.4
+jamfdevops/jamfpro:0.0.8
 ```
 Valid image tags can be found on  [Dockerhub Tags](https://hub.docker.com/r/jamfdevops/jamfpro/tags/) or [Github Releases](https://github.com/jamf/jamfpro/releases).
 
