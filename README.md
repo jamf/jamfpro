@@ -31,8 +31,9 @@ JMXREMOTE_PASSWORD_FILE
 CATALINA_OPTS
 JAVA_OPTS [ -Djava.awt.headless=true ]
 
-MASTER_NODE_NAME -- Enable clustering, when set this container will be the master node 
-  should be set as the hostname from the perspective of MySQL login
+MASTER_NODE_NAME -- Enable clustering
+  This MUST be the ip address of the master as recognized by Tomcat
+  There is no direct JamfPro master <--> slave communication so the ip need not be reachable by the slave directly
 
 POD_NAME -- Enable Kubernetes clustering via downward API
 POD_IP -- Enable Kubernetes clustering via downward API
