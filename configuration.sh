@@ -154,7 +154,6 @@ if [ ! -z "$MASTER_NODE_NAME" ]; then
     fi
 
   fi
-  create_cluster_properties $MASTER_NODE_NAME
 fi
 
 # Check for MEMCACHED_HOST environment variable to setup Memcached
