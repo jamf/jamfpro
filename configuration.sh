@@ -152,7 +152,9 @@ if [ ! -z "$MASTER_NODE_NAME" ]; then
     else
       echo_time "This node will be setup as non-master node"
     fi
-
+  else
+    # Master node name set but no pod name or pod ip set
+    create_cluster_properties $MASTER_NODE_NAME
   fi
 fi
 
