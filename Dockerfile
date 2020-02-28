@@ -1,4 +1,4 @@
-FROM tomcat:8.5.42-jdk11-openjdk-slim
+FROM tomcat:8.5.51-jdk11-openjdk-slim
 
 LABEL Maintaner JamfDevops <devops@jamf.com>
 
