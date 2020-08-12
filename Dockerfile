@@ -1,4 +1,4 @@
-FROM tomcat:8.5.51-jdk11-openjdk-slim
+FROM tomcat:8.5.57-jdk11-openjdk-slim-buster
 
 LABEL Maintaner JamfDevops <devops@jamf.com>
 
