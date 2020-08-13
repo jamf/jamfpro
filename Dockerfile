@@ -1,11 +1,13 @@
-FROM tomcat:8.5.57-jdk11-openjdk-slim-buster
+FROM tomcat:8.5.57-jdk11-corretto
 
-LABEL Maintaner JamfDevops <devops@jamf.com>
+LABEL Maintainer JamfDevops <devops@jamf.com>
 
-RUN apt-get update -qq && \
-	DEBIAN_FRONTEND=noninteractive apt-get install --ignore-missing --no-install-recommends -y jq curl unzip && \
-	apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-	adduser --disabled-password --gecos '' tomcat && \
+RUN yum -y update && \
+	yum -y install jq curl unzip && \
+	yum clean all && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+	yum -y install util-linux && \
+	yum -y install shadow-utils && \
+	useradd -U tomcat && usermod --lock --expiredate 1 tomcat &&  \
 	rm -rf /usr/local/tomcat/webapps && \
 	mkdir -p /usr/local/tomcat/webapps
 
