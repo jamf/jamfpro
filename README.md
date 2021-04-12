@@ -35,9 +35,9 @@ JMXREMOTE_PASSWORD_FILE
 CATALINA_OPTS
 JAVA_OPTS [ -Djava.awt.headless=true ]
 
-MASTER_NODE_NAME -- Enable clustering
-  This MUST be the ip address of the master as recognized by Tomcat
-  There is no direct JamfPro master <--> slave communication so the ip need not be reachable by the slave directly
+PRIMARY_NODE_NAME -- Enable clustering
+  This MUST be the ip address of the primary as recognized by Tomcat
+  There is no direct JamfPro primary <--> secondary communication so the ip need not be reachable by the secondary directly
 
 POD_NAME -- Enable Kubernetes clustering via downward API
 POD_IP -- Enable Kubernetes clustering via downward API
@@ -66,7 +66,7 @@ Valid image tags can be found on  [Dockerhub Tags](https://hub.docker.com/r/jamf
 
 
 ## Kubernetes Deployment
-When enabling clustering the Tomcat manifest should include both `POD_NAME` and `POD_IP` environment variables which can be accessed via the Kubernetes downward API.  The environment variable `MASTER_NODE_NAME` should be set to whichever pod will become the master node.  An example of utilizing the downward API in a manifest:
+When enabling clustering the Tomcat manifest should include both `POD_NAME` and `POD_IP` environment variables which can be accessed via the Kubernetes downward API.  The environment variable `PRIMARY_NODE_NAME` should be set to whichever pod will become the primary node.  An example of utilizing the downward API in a manifest:
 ```
 - name: POD_NAME
 valueFrom:
@@ -77,4 +77,3 @@ valueFrom:
   fieldRef:
     fieldPath: status.podIP
 ```
-A set of example Kubernetes manifests can be found in another Github repo here: [JamfPro Kubernetes Manifests](https://github.com/jamf/kubernetesManifests)

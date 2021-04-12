@@ -45,7 +45,7 @@ setup_remote_database() {
   DATABASE_PASSWORD=${DATABASE_PASSWORD:-jamfsw03}
   DATABASE_PORT=${DATABASE_PORT:-3306}
 
-  echo_time "\n\nDatabase connection information: \n DATABASE_HOST: $DATABASE_HOST \n DATABASE_NAME: $DATABASE_NAME \n DATABASE_USERNAME: $DATABASE_USERNAME\n\n"
+  echo_time "\n\nDatabase connection information: \n DATABASE_HOST: ${DATABASE_HOST} \n DATABASE_NAME: ${DATABASE_NAME} \n DATABASE_USERNAME: ${DATABASE_USERNAME}\n\n"
 
   echo_time "Setting up the DataBase.xml file to use remote MySQL database"
   if [ ! -f "/usr/local/tomcat/webapps/ROOT/WEB-INF/xml/DataBase.xml" ]; then
@@ -73,7 +73,7 @@ setup_jmx_remote_opts() {
     RMI_SERVER_HOSTNAME=${RMI_SERVER_HOSTNAME:-}
     JMXREMOTE_PASSWORD_FILE=${JMXREMOTE_PASSWORD_FILE:-}
 
-    echo_time "\n\nJMX connection information:\n JMXREMOTE: $JMXREMOTE \n JMXREMOTE_PORT: $JMXREMOTE_PORT \n JMXREMOTE_RMI_PORT: $JMXREMOTE_RMI_PORT \n JMXREMOTE_SSL: $JMXREMOTE_SSL \n JMXREMOTE_AUTHENTICATE: $JMXREMOTE_AUTHENTICATE \n RMI_SERVER_HOSTNAME: $RMI_SERVER_HOSTNAME \n JMXREMOTE_PASSWORD_FILE: $JMXREMOTE_PASSWORD_FILE \n\n"
+    echo_time "\n\nJMX connection information:\n JMXREMOTE: ${JMXREMOTE} \n JMXREMOTE_PORT: ${JMXREMOTE_PORT} \n JMXREMOTE_RMI_PORT: ${JMXREMOTE_RMI_PORT} \n JMXREMOTE_SSL: ${JMXREMOTE_SSL} \n JMXREMOTE_AUTHENTICATE: ${JMXREMOTE_AUTHENTICATE} \n RMI_SERVER_HOSTNAME: ${RMI_SERVER_HOSTNAME} \n JMXREMOTE_PASSWORD_FILE: ${JMXREMOTE_PASSWORD_FILE} \n\n"
 
     JMXREMOTE_OPTS="${JMXREMOTE_OPTS} -Dcom.sun.management.jmxremote"
     JMXREMOTE_OPTS="${JMXREMOTE_OPTS} -Dcom.sun.management.jmxremote.port=${JMXREMOTE_PORT}"
@@ -93,7 +93,7 @@ setup_java_opts() {
 
   export JAVA_OPTS="${JAVA_OPTS} ${CATALINA_OPTS} ${JMXREMOTE_OPTS}"
 
-  echo_time "\n\nJAVA_OPTS: $JAVA_OPTS \n\n"
+  echo_time "\n\nJAVA_OPTS: ${JAVA_OPTS} \n\n"
 }
 
 create_cache_properties(){
@@ -113,7 +113,7 @@ EOF
 
 ##########################################################
 # Arguments:
-#   Cluster master node name / ip
+#   Cluster primary node name / ip
 ##########################################################
 create_cluster_properties() {
   echo_time "Creating the clustering properties file"
@@ -137,29 +137,29 @@ else
   echo_time "/usr/local/tomcat/webapps/ROOT exists, skipping ROOT.war deploy"
 fi
 
-# Check to see if clustering should be enabled by existence of MASTER_NODE_NAME
-if [ ! -z "$MASTER_NODE_NAME" ]; then
-  echo_time "Master node name is set, enable clustering with master set to: $MASTER_NODE_NAME"
+# Check to see if clustering should be enabled by existence of PRIMARY_NODE_NAME
+if [ -n "$PRIMARY_NODE_NAME" ]; then
+  echo_time "Primary node name is set, enable clustering with primary set to: ${PRIMARY_NODE_NAME}"
   
   # Check to see if this is a Kubernetes deployment with POD_NAME and POD_IP set
-  if [ ! -z "$POD_NAME" ] && [ ! -z "$POD_IP" ]; then
+  if [ -n "$POD_NAME" ] && [ -n "$POD_IP" ]; then
     echo_time "POD_NAME and POD_IP set, assuming Kubernetes environment"
   
-    # Check to see if the master node name requested is the current pod name, if so set this as master
-    if [[ "$MASTER_NODE_NAME" == "$POD_NAME" ]]; then
-      echo_time "This node should be the master node, setting paramaters accordingly"
-      create_cluster_properties $POD_IP
+    # Check to see if the primary node name requested is the current pod name, if so set this as primary
+    if [[ "${PRIMARY_NODE_NAME}" == "${POD_NAME}" ]]; then
+      echo_time "This node should be the primary node, setting paramaters accordingly"
+      create_cluster_properties "${POD_IP}"
     else
-      echo_time "This node will be setup as non-master node"
+      echo_time "This node will be setup as secondary node"
     fi
   else
-    # Master node name set but no pod name or pod ip set
-    create_cluster_properties $MASTER_NODE_NAME
+    # Primary node name set but no pod name or pod ip set
+    create_cluster_properties "${PRIMARY_NODE_NAME}"
   fi
 fi
 
 # Check for MEMCACHED_HOST environment variable to setup Memcached
-if [ ! -z "$MEMCACHED_HOST" ]; then
+if [ -n "$MEMCACHED_HOST" ]; then
   echo_time "Memcached host is set, setup memcached settings"
   create_cache_properties
 
