@@ -1,7 +1,11 @@
 # JamfPro Tomcat Docker image [![Build Status](https://travis-ci.com/jamf/jamfpro.svg?branch=master)](https://travis-ci.com/jamf/jamfpro)
 
 ## Description
-Basic Docker image based upon upstream Tomcat image to run a manually downloaded JamfPro ROOT.war from JamfNation
+Basic example Docker image based upon upstream Tomcat image to run a manually downloaded JamfPro ROOT.war from JamfNation.
+
+## Note
+This repository is provided as an example of how to construct a very basic Docker image to run a JamfPro server.
+Please refer to this JamfNation post - [Apache Tomcat Versions Installed by the Jamf Pro Installer](https://www.jamf.com/jamf-nation/articles/380/apache-tomcat-versions-installed-by-the-jamf-pro-installer) - to determine which Tomcat versions are explictly supported for a particular version of JamfPro.
 
 ## Features
 * Creates and runs Tomcat as user:group tomcat (non-root)
