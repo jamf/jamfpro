@@ -1,0 +1,2 @@
+        <Logger name="com.jamfsoftware.analytics.file" level="info" additivity="false" includeLocation="false">
+            <AppenderRef ref="Console"/>

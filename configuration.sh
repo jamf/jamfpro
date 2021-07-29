@@ -28,12 +28,18 @@ setup_stdout_logging() {
   if [[ $STDOUT_LOGGING == "true" ]]; then
     #Add stdout output for Jamf specific log files while maintaining logging to the files
     echo_time "STDOUT_LOGGING is true, add stdout logging for all logfiles"
-    if grep -Fxq "log4j.rootLogger=INFO,JAMF,stdout" /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/log4j.properties; then
-      echo_time "stdout logging appears to be present in log4j.properties file, skipping"
+    if grep -Fxq '        <Console name="Console" target="SYSTEM_OUT">' /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/log4j2.xml; then
+      echo_time "stdout logging appears to be present in log4j2.xml file, skipping"
     else
-      echo_time "Add stdout logging to log4j.properties file"
-      sed -e '/log4j.rootLogger/ {r /log4j.stdout.replace
-        d}' -i /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/log4j.properties
+      echo_time "Add stdout logging to log4j2.xml file"
+      sed -e '/<Appenders>/ {r /log4j2.stdout.appenders.replace
+        d}' -i /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/log4j2.xml
+      sed -e '/<Root level="info" includeLocation="false">/ {r /log4j2.stdout.loggers.root.replace
+        d}' -i /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/log4j2.xml
+      sed -e '/<Logger name="com.jamfsoftware.analytics.file" level="info" additivity="false" includeLocation="false">/ {r /log4j2.stdout.loggers.analytics.replace
+        d}' -i /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/log4j2.xml
+      sed -e '/<AppenderRef ref="JAMFVPP"\/>/ {r /log4j2.stdout.loggers.vpp.replace
+        d}' -i /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/log4j2.xml
     fi
   fi
 }

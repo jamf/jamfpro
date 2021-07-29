@@ -1,0 +1,2 @@
+            <AppenderRef ref="JAMFVPP"/>
+            <AppenderRef ref="Console"/>
