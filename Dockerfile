@@ -10,10 +10,11 @@ RUN apt-get update -qq && \
 	mkdir -p /usr/local/tomcat/webapps
 
 COPY startup.sh /startup.sh
+COPY log4j.stdout.replace /log4j.stdout.replace
 COPY log4j2.stdout.appenders.replace /log4j2.stdout.appenders.replace
 COPY log4j2.stdout.loggers.analytics.replace /log4j2.stdout.loggers.analytics.replace
 COPY log4j2.stdout.loggers.root.replace /log4j2.stdout.loggers.root.replace
-COPY log4j2.stdout.loggers.vpp.replace /log4j2.stdout.loggers.vpp.replace						 
+COPY log4j2.stdout.loggers.vpp.replace /log4j2.stdout.loggers.vpp.replace
 COPY configuration.sh /configuration.sh
 
 CMD ["/startup.sh"]
