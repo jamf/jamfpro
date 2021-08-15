@@ -20,13 +20,16 @@ unpack_root_war() {
 setup_linux_logging_paths() {
   #Replace Mac logging paths with linux based paths
   echo_time "Set logging file paths to use linux file paths"
-  #Check whether log4j.properties (<= Jamf Pro 10.30.3) or log4j2.xml (>= Jamf Pro 10.31.0) exists
-  FILE=/usr/local/tomcat/webapps/ROOT/WEB-INF/classes/log4j.properties
-  if test -f "$FILE"; then
-    sed -i s#/Library/JSS/Logs#/usr/local/tomcat/logs# /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/log4j.properties
-  else
-    sed -i s#/Library/JSS/Logs#/usr/local/tomcat/logs# /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/log4j2.xml
-  fi
+  CONFIG_FILES=(
+	"/usr/local/tomcat/webapps/ROOT/WEB-INF/classes/log4j.properties"
+	"/usr/local/tomcat/webapps/ROOT/WEB-INF/classes/log4j2.xml"
+	"/usr/local/tomcat/webapps/ROOT/WEB-INF/classes/ESAPI.properties"
+  )
+  for config in "${CONFIG_FILES[@]}"; do
+	if test -f "${config}"; then
+	  sed -i s#/Library/JSS/Logs#/usr/local/tomcat/logs# "${config}"
+	fi
+  done
 }
 
 setup_stdout_logging() {
@@ -89,7 +92,7 @@ setup_remote_database() {
 setup_jmx_remote_opts() {
   JMXREMOTE_OPTS=${JMXREMOTE_OPTS:-}
   JMXREMOTE=${JMXREMOTE:-false}
-  
+
   if [[ $JMXREMOTE == "true" ]]; then
     echo_time "JMX is set to enabled, parsing environment variable settings"
     JMXREMOTE_PORT=${JMXREMOTE_PORT:-}
@@ -166,11 +169,11 @@ fi
 # Check to see if clustering should be enabled by existence of PRIMARY_NODE_NAME
 if [ -n "$PRIMARY_NODE_NAME" ]; then
   echo_time "Primary node name is set, enable clustering with primary set to: ${PRIMARY_NODE_NAME}"
-  
+
   # Check to see if this is a Kubernetes deployment with POD_NAME and POD_IP set
   if [ -n "$POD_NAME" ] && [ -n "$POD_IP" ]; then
     echo_time "POD_NAME and POD_IP set, assuming Kubernetes environment"
-  
+
     # Check to see if the primary node name requested is the current pod name, if so set this as primary
     if [[ "${PRIMARY_NODE_NAME}" == "${POD_NAME}" ]]; then
       echo_time "This node should be the primary node, setting paramaters accordingly"

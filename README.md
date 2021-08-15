@@ -10,7 +10,7 @@ Please refer to this JamfNation post - [Apache Tomcat Versions Installed by the 
 ## Features
 * Creates and runs Tomcat as user:group tomcat (non-root)
 * Correct pathing for JamfPro file logs
-* Logs to stdout of JamfPro logs in addtion to catalina logs
+* Logs to stdout of JamfPro logs in addition to catalina logs
 * JMX connection information
 * Remote database connection in DataBase.xml
 

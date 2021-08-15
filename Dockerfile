@@ -1,6 +1,6 @@
-FROM tomcat:8.5.65-jdk11-openjdk-slim-buster
+FROM tomcat:8.5.69-jdk11-openjdk-slim-buster
 
-LABEL Maintaner JamfDevops <devops@jamf.com>
+LABEL Maintainer JamfDevops <devops@jamf.com>
 
 RUN apt-get update -qq && \
 	DEBIAN_FRONTEND=noninteractive apt-get install --ignore-missing --no-install-recommends -y jq curl unzip && \
