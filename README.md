@@ -1,4 +1,9 @@
-# JamfPro Tomcat Docker image [![Build Status](https://travis-ci.com/jamf/jamfpro.svg?branch=master)](https://travis-ci.com/jamf/jamfpro)
+# JamfPro Tomcat Docker Image
+
+## Please Note ##
+The Dockehub image has moved to the Jamf namespace and tags will pushed here:
+[Dockerhub Tags](https://hub.docker.com/r/jamf/jamfpro/tags/)
+
 
 ## Description
 Basic example Docker image based upon upstream Tomcat image to run a manually downloaded JamfPro ROOT.war from JamfNation.
@@ -62,7 +67,7 @@ docker run -p 8080:8080 -d \
 -v $(pwd)/webapps:/usr/local/tomcat/webapps \
 jamfdevops/jamfpro:0.0.8
 ```
-Valid image tags can be found on  [Dockerhub Tags](https://hub.docker.com/r/jamfdevops/jamfpro/tags/) or [Github Releases](https://github.com/jamf/jamfpro/releases).
+Valid image tags can be found on  [Dockerhub Tags](https://hub.docker.com/r/jamf/jamfpro/tags/) or [Github Releases](https://github.com/jamf/jamfpro/releases).
 
 
 ## Kubernetes Deployment
