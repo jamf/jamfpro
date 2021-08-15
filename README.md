@@ -1,7 +1,7 @@
 # JamfPro Tomcat Docker Image
 
 ## Please Note ##
-The Dockehub image has moved to the Jamf namespace and tags will pushed here:
+The Dockerhub image has moved to the Jamf namespace and tags will pushed here:
 [Dockerhub Tags](https://hub.docker.com/r/jamf/jamfpro/tags/)
 
 
