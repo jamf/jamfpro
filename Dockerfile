@@ -1,4 +1,5 @@
-FROM tomcat:8.5.73-jdk11-openjdk-slim-buster
+ARG TOMCAT_VERSION=9.0.71-jdk11
+FROM tomcat:$TOMCAT_VERSION
 
 LABEL Maintainer JamfDevops <devops@jamf.com>
 
