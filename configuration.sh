@@ -140,6 +140,12 @@ memcached.timeToLiveSeconds=120
 EOF
 }
 
+## Move the server.xml template into proper location
+tomcatServerXML() {
+  echo_time "Moving custom server.xml into tomcat"
+  eval "echo \"$(cat "/jamfpro-config/server.template")\" " > /usr/local/tomcat/conf/server.xml
+}
+
 ##########################################################
 # Arguments:
 #   Cluster primary node name / ip
@@ -148,7 +154,7 @@ create_cluster_properties() {
   echo_time "Creating the clustering properties file"
 cat <<- EOF > /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/clustering.properties
 cluster.settings.enabled=true
-cluster.settings.monitor_frequency=180
+cluster.settings.monitor_frequency=60
 cluster.node[0]=$1
 EOF
 }
@@ -205,5 +211,6 @@ setup_jmx_remote_opts
 
 setup_java_opts
 
+tomcatServerXML
 
 ##########################################################
