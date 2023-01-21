@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<Server port=\"-1\" shutdown=\"SHUTDOWN\">
+    <Listener className=\"org.apache.catalina.startup.VersionLoggerListener\" />
+    <Listener className=\"org.apache.catalina.core.AprLifecycleListener\" SSLEngine=\"on\" />
+    <Listener className=\"org.apache.catalina.core.JreMemoryLeakPreventionListener\" />
+    <Listener className=\"org.apache.catalina.mbeans.GlobalResourcesLifecycleListener\" />
+    <Listener className=\"org.apache.catalina.core.ThreadLocalLeakPreventionListener\" />
+
+    <GlobalNamingResources>
+
+        <Resource 
+            name=\"UserDatabase\"
+            auth=\"Container\"
+            type=\"org.apache.catalina.UserDatabase\"
+            description=\"User database that can be updated and saved\"
+            factory=\"org.apache.catalina.users.MemoryUserDatabaseFactory\"
+            pathname=\"conf/tomcat-users.xml\" 
+            />
+
+    </GlobalNamingResources>
+
+    <Service name=\"Catalina\">
+
+        <Executor
+            name=\"tomcatThreadPool\" 
+            namePrefix=\"Tomcat-\"
+            maxThreads=\"${tomcat_executor_max_threads:=150}\" 
+            minSpareThreads=\"${tomcat_executor_min_threads:=4}\"/>
+
+        <Connector 
+            executor=\"tomcatThreadPool\" 
+            port=\"${tomcat_connector_port:=8080}\"
+            protocol=\"HTTP/1.1\"
+            connectionTimeout=\"${tomcat_connection_timeout:=61000}\"
+            URIEncoding=\"UTF-8\"
+            scheme=\"https\"
+            redirectPort=\"8443\"            
+            secure=\"true\"
+            proxyPort=\"${tomcat_connector_proxy_port:=443}\"
+            server=\"${tomcat_connector_server:=Jamf}\"
+            maxParameterCount=\"${tomcat_connector_max_parameter_count:=300000}\"
+            />
+
+        <Engine name=\"Catalina\" defaultHost=\"localhost\">
+
+            <Realm className=\"org.apache.catalina.realm.LockOutRealm\">
+
+                <Realm 
+                    className=\"org.apache.catalina.realm.UserDatabaseRealm\"
+                    resourceName=\"UserDatabase\"
+                    />
+
+            </Realm>
+
+            <Host 
+                name=\"localhost\"  
+                appBase=\"${tomcat_host_app_base:=webapps}\"
+                unpackWARs=\"${tomcat_host_unpack_wars:=true}\" 
+                autoDeploy=\"${tomcat_host_auto_deploy:=true}\"
+                startStopThreads=\"${tomcat_host_start_stop_threads:=4}\"
+                >
+
+                <Valve className=\"org.apache.catalina.valves.RemoteIpValve\" /> 
+
+                <Valve className=\"org.apache.catalina.valves.ErrorReportValve\"
+                    showReport=\"false\"
+                    showServerInfo=\"false\"
+                    />
+
+		<Valve 
+		    className=\"org.apache.catalina.valves.StuckThreadDetectionValve\" 
+		    threshold=\"${tomcat_host_stuck_threads_threshold:=600}\"
+		    />
+
+            </Host>
+        </Engine>
+    </Service>
+</Server>
