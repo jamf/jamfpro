@@ -19,6 +19,13 @@ Please refer to this JamfNation post - [Apache Tomcat Versions Installed by the 
 * JMX connection information
 * Remote database connection in DataBase.xml
 
+## Docker Build Options
+Override the version of Tomcat used:
+```
+docker build --build-arg "TOMCAT_VERSION=8.5.85-jdk11" -t jamfpro .
+```
+Replace the `server.template` file prior to building to override the server.xml Tomcat file.
+
 ## Environment Variable Options
 ```
 STDOUT_LOGGING [ true ] / false
@@ -49,6 +56,21 @@ POD_IP -- Enable Kubernetes clustering via downward API
 
 MEMCACHED_HOST -- Enable Memcached caching, assumes port 11211 by default
 
+server.xml template overrides:
+
+tomcat_executor_max_threads - 150
+tomcat_executor_min_threads - 4
+tomcat_connector_port - 8080
+tomcat_connection_timeout - 61000
+tomcat_connector_proxy_port - 443
+tomcat_connector_server - Jamf
+tomcat_connector_max_parameter_count - 300000
+tomcat_host_app_base - webapps
+tomcat_host_unpack_wars - true
+tomcat_host_auto_deploy - true
+tomcat_host_start_stop_threads - 4
+tomcat_host_stuck_threads_threshold - 600
+
 ```
 
 ## Data Persistence
@@ -65,7 +87,7 @@ docker run -p 8080:8080 -d \
 -e DATABASE_HOST=host.docker.internal \
 -v $(pwd)/ROOT.war:/data/ROOT.war \
 -v $(pwd)/webapps:/usr/local/tomcat/webapps \
-jamfdevops/jamfpro:0.0.8
+jamf/jamfpro:0.0.18
 ```
 Valid image tags can be found on  [Dockerhub Tags](https://hub.docker.com/r/jamf/jamfpro/tags/) or [Github Releases](https://github.com/jamf/jamfpro/releases).
 
