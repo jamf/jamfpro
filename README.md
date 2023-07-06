@@ -35,6 +35,7 @@ DATABASE_NAME [ jamfsoftware ]
 DATABASE_USERNAME [ jamfsoftware ]
 DATABASE_PASSWORD [ jamfsw03 ]
 DATABASE_PORT [ 3306 ]
+JDBC_PARAMETERS [ ]
 
 JMXREMOTE true / [ false ]
 JMXREMOTE_PORT
@@ -76,6 +77,9 @@ tomcat_host_stuck_threads_threshold - 600
 ## Data Persistence
 This image requires that either a `/data/ROOT.war` be bind-mounted and exist, or the `/usr/bin/tomcat/webapps/ROOT` directory exist.
 A ROOT.war will be auto-unpacked and configured based upon the above environment variables, or if the ROOT directory already exists, nothing will be unpacked but logging paths, database information, JMX, and Java opts will be set.
+
+## File Override Config
+The `DataBase.xml` file can be optionally mounted into the container's `/config` directory, this will override any environment variables set.
 
 ## Example
 Run a basic JamfPro instance with port 8080 exposed locally on port 8080, setup remote database, bind-mounted ROOT.war, and bind-mounted webapps directory.
