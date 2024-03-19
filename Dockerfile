@@ -11,7 +11,7 @@ RUN apt-get update -qq && \
 	mkdir -p /usr/local/tomcat/webapps && \
 	mkdir /jamfpro-config && \
 	chmod -R o+w /usr/local/tomcat/webapps && \
-	chmod go+r /usr/local/tomcat/conf /usr/local/tomcat/conf/server.xml
+	chmod go+w /usr/local/tomcat/conf /usr/local/tomcat/conf/server.xml
 
 
 COPY startup.sh /startup.sh
