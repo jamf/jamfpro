@@ -143,11 +143,13 @@ cache.type=memcached
 EOF
 }
 
+# PI109681
 create_memcached_properties(){
   echo_time "Setting up the memcached.properties"
   cat <<-EOF > ${WEBAPPS_DIR}/ROOT/WEB-INF/classes/dal/memcached.properties
 memcached.endpoints[0]=$MEMCACHED_HOST
 memcached.timeToLiveSeconds=120
+memcached.directory.timeToLiveSeconds=120
 EOF
 }
 
