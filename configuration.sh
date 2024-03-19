@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-WEBAPPS_DIR="/usr/local/tomcat/webapps"
+WEBAPPS_DIR=${WEBAPPS_DIR:-"/usr/local/tomcat/webapps"}
 
 ##########################################################
 ####################### Functions ########################
