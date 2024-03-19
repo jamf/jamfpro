@@ -10,7 +10,9 @@ RUN apt-get update -qq && \
 	rm -rf /usr/local/tomcat/webapps && \
 	mkdir -p /usr/local/tomcat/webapps && \
 	mkdir /jamfpro-config && \
-	chmod -R o+w /usr/local/tomcat/webapps /usr/local/tomcat/conf
+	chmod -R o+w /usr/local/tomcat/webapps && \
+	chmod go+r /usr/local/tomcat/conf /usr/local/tomcat/conf/server.xml
+
 
 COPY startup.sh /startup.sh
 COPY log4j.stdout.replace /log4j.stdout.replace
