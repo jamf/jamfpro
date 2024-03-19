@@ -9,7 +9,8 @@ RUN apt-get update -qq && \
 	adduser --disabled-password --gecos '' tomcat && \
 	rm -rf /usr/local/tomcat/webapps && \
 	mkdir -p /usr/local/tomcat/webapps && \
-	mkdir /jamfpro-config
+	mkdir /jamfpro-config && \
+	chmod o+w /usr/local/tomcat/webapps /usr/local/tomcat/conf/server.xml
 
 COPY startup.sh /startup.sh
 COPY log4j.stdout.replace /log4j.stdout.replace
