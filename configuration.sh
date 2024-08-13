@@ -148,6 +148,7 @@ create_memcached_properties(){
   cat <<-EOF > ${WEBAPPS_DIR}/ROOT/WEB-INF/classes/dal/memcached.properties
 memcached.endpoints[0]=$MEMCACHED_HOST
 memcached.timeToLiveSeconds=120
+memcached.directory.timeToLiveSeconds=86400
 EOF
 }
 
