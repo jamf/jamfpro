@@ -1,4 +1,4 @@
-ARG TOMCAT_VERSION=10.1.28-jdk21
+ARG TOMCAT_VERSION=10.1.31-jdk21
 FROM tomcat:$TOMCAT_VERSION
 
 LABEL Maintainer JamfDevops <devops@jamf.com>
